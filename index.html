@@ -1,1024 +1,1493 @@
 ```html
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
-  <meta charset="UTF-8">
 
-  <meta name="viewport"
-        content="width=device-width,
-                 initial-scale=1.0,
-                 user-scalable=no">
+<meta charset="UTF-8">
 
-  <meta name="robots" content="noindex,nofollow">
+<meta name="viewport"
+      content="width=device-width,
+               initial-scale=1.0,
+               user-scalable=no">
 
-  <title>大型モニター用 アルファベット＆ローマ字</title>
+<meta name="robots"
+      content="noindex,nofollow">
 
-  <style>
+<title>
+大型モニター用 アルファベット＆ローマ字
+</title>
 
-    /* ==============================
-       基本設定
-    ============================== */
 
-    * {
-      box-sizing: border-box;
-      user-select: none;
-      -webkit-user-select: none;
-      touch-action: manipulation;
-    }
+<style>
 
-    html,
-    body {
-      width: 100%;
-      height: 100%;
-      margin: 0;
-      padding: 0;
+/* =====================================================
+   基本設定
+===================================================== */
 
-      overflow: hidden;
+* {
+  box-sizing: border-box;
 
-      font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Noto Sans JP",
-        "Yu Gothic",
-        sans-serif;
+  user-select: none;
+  -webkit-user-select: none;
 
-      background: #0f172a;
-      color: white;
-    }
+  touch-action: manipulation;
+}
 
 
-    /* ==============================
-       ヘッダー
-    ============================== */
+html,
+body {
 
-    .header-panel {
+  width: 100%;
+  height: 100%;
 
-      position: absolute;
+  margin: 0;
+  padding: 0;
 
-      top: 10px;
-      left: 50%;
+  overflow: hidden;
 
-      transform: translateX(-50%);
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Noto Sans JP",
+    "Yu Gothic",
+    sans-serif;
 
-      width: 94%;
-      max-width: 1000px;
+  background: #0f172a;
 
-      display: flex;
+  color: #ffffff;
+}
 
-      gap: 10px;
 
-      justify-content: center;
-      align-items: center;
+/* =====================================================
+   ヘッダー
+===================================================== */
 
-      flex-wrap: wrap;
+.header-panel {
 
-      z-index: 100;
+  position: fixed;
 
-      background: rgba(30,41,59,0.92);
+  top: 10px;
+  left: 50%;
 
-      padding: 10px;
+  transform: translateX(-50%);
 
-      border-radius: 16px;
+  width: 94%;
+  max-width: 1100px;
 
-      border: 1px solid #475569;
-    }
+  display: flex;
 
+  justify-content: center;
+  align-items: center;
 
-    /* ==============================
-       タブ
-    ============================== */
+  gap: 10px;
 
-    .tab-btn {
+  flex-wrap: wrap;
 
-      flex: 1;
+  padding: 10px;
 
-      min-width: 150px;
+  background:
+    rgba(30,41,59,0.94);
 
-      padding: 10px 14px;
+  border:
+    1px solid #475569;
 
-      font-size: clamp(13px, 2vw, 18px);
+  border-radius: 16px;
 
-      font-weight: bold;
+  z-index: 1000;
+}
 
-      border: 2px solid #38bdf8;
 
-      border-radius: 10px;
+/* =====================================================
+   タブ
+===================================================== */
 
-      background: transparent;
+.tab-btn {
 
-      color: #38bdf8;
+  flex: 1;
 
-      cursor: pointer;
-    }
+  min-width: 150px;
 
-    .tab-btn.active {
+  padding: 10px 14px;
 
-      background: #38bdf8;
+  border: 2px solid #38bdf8;
 
-      color: #0f172a;
-    }
+  border-radius: 10px;
 
+  background: transparent;
 
-    /* ==============================
-       セレクト
-    ============================== */
+  color: #38bdf8;
 
-    select {
+  font-size:
+    clamp(13px, 2vw, 18px);
 
-      font-size: clamp(13px, 2vw, 17px);
+  font-weight: bold;
 
-      padding: 8px 12px;
+  cursor: pointer;
+}
 
-      border-radius: 8px;
 
-      border: 2px solid #38bdf8;
+.tab-btn.active {
 
-      background: #0f172a;
+  background: #38bdf8;
 
-      color: white;
+  color: #0f172a;
+}
 
-      font-weight: bold;
-    }
 
+.tab-btn:active {
 
-    /* ==============================
-       全画面ステージ
-    ============================== */
+  transform: scale(0.97);
+}
 
-    .full-stage {
 
-      width: 100vw;
-      height: 100vh;
+/* =====================================================
+   大文字・小文字設定
+===================================================== */
 
-      display: flex;
+#case-select {
 
-      flex-direction: column;
+  padding: 8px 12px;
 
-      justify-content: center;
+  border:
+    2px solid #38bdf8;
 
-      align-items: center;
+  border-radius: 8px;
 
-      text-align: center;
+  background: #0f172a;
 
-      cursor: pointer;
+  color: #ffffff;
 
-      padding: 100px 20px 100px;
-    }
+  font-size:
+    clamp(13px, 2vw, 17px);
 
+  font-weight: bold;
+}
 
-    /* ==============================
-       メイン文字
-       モニターでは巨大表示
-    ============================== */
 
-    .main-text {
+/* =====================================================
+   メインステージ
+===================================================== */
 
-      /*
-        縦横どちらでも
-        画面いっぱいに近いサイズ
-      */
+.full-stage {
 
-      font-size: min(45vw, 55vh);
+  position: fixed;
 
-      font-weight: 900;
+  inset: 0;
 
-      line-height: 0.95;
+  width: 100vw;
+  height: 100vh;
 
-      color: #facc15;
+  display: flex;
 
-      text-shadow:
-        0 8px 20px rgba(0,0,0,0.6);
+  flex-direction: column;
 
-      max-width: 95vw;
+  justify-content: center;
 
-      overflow-wrap: anywhere;
-    }
+  align-items: center;
 
+  text-align: center;
 
-    /* ==============================
-       答え
-    ============================== */
+  cursor: pointer;
 
-    .sub-text {
+  /*
+    上：ヘッダー
+    下：ヒント＋ボタン
+  */
 
-      font-size: min(12vw, 15vh);
+  padding:
+    110px
+    20px
+    145px;
 
-      font-weight: bold;
+  z-index: 1;
+}
 
-      color: #38bdf8;
 
-      margin-top: 25px;
+/* =====================================================
+   問題
+===================================================== */
 
-      min-height: min(15vw, 17vh);
+.main-text {
 
-      text-align: center;
-    }
+  /*
+    画面いっぱいに近づけるが、
+    答え・ボタンとの重なりを防ぐ
+  */
 
+  font-size:
+    min(42vw, 42vh);
 
-    /* ==============================
-       説明
-    ============================== */
+  font-weight: 900;
 
-    .hint-text {
+  line-height: 0.9;
 
-      position: absolute;
+  color: #facc15;
 
-      bottom: 85px;
+  max-width: 92vw;
 
-      left: 50%;
+  overflow-wrap: anywhere;
 
-      transform: translateX(-50%);
+  text-shadow:
+    0 8px 20px
+    rgba(0,0,0,0.6);
 
-      font-size: clamp(13px, 2vw, 20px);
+  transition:
+    font-size 0.2s ease,
+    transform 0.15s ease;
+}
 
-      color: #cbd5e1;
 
-      text-align: center;
+/* =====================================================
+   答え
+===================================================== */
 
-      width: 90%;
-    }
+.sub-text {
 
+  /*
+    答えは問題より小さくする
+  */
 
-    /* ==============================
-       次へボタン
-    ============================== */
+  font-size:
+    min(9vw, 10vh);
 
-    .footer-panel {
+  font-weight: bold;
 
-      position: absolute;
+  line-height: 1.1;
 
-      bottom: 15px;
+  color: #38bdf8;
 
-      left: 50%;
+  margin-top: 20px;
 
-      transform: translateX(-50%);
+  min-height:
+    min(10vw, 11vh);
 
-      width: 90%;
+  max-width: 90vw;
 
-      max-width: 700px;
+  text-align: center;
 
-      z-index: 100;
-    }
+  /*
+    長いローマ字でも
+    画面からはみ出さない
+  */
 
+  overflow-wrap: anywhere;
 
-    .btn-next {
+  opacity: 1;
 
-      width: 100%;
+  transition:
+    opacity 0.15s ease;
+}
 
-      padding: 14px;
 
-      font-size: clamp(18px, 3vw, 28px);
+/* =====================================================
+   答え表示時
+===================================================== */
 
-      font-weight: bold;
+.sub-text.answer-show {
 
-      border: none;
+  animation:
+    answerAppear 0.25s ease;
+}
 
-      border-radius: 14px;
 
-      background: #0284c7;
+@keyframes answerAppear {
 
-      color: white;
+  0% {
 
-      cursor: pointer;
+    opacity: 0;
 
-      box-shadow:
-        0 6px 0 #0369a1;
-    }
+    transform:
+      scale(0.85);
+  }
 
+  100% {
 
-    .btn-next:active {
+    opacity: 1;
 
-      transform: translateY(3px);
+    transform:
+      scale(1);
+  }
 
-      box-shadow: none;
-    }
+}
 
 
-    /* ==============================
-       iPhone 縦
-    ============================== */
+/* =====================================================
+   説明
+===================================================== */
 
-    @media (max-width: 600px) and (orientation: portrait) {
+.hint-text {
 
-      .header-panel {
+  position: fixed;
 
-        top: 6px;
+  left: 50%;
 
-        width: 96%;
+  bottom: 82px;
 
-        padding: 6px;
+  transform:
+    translateX(-50%);
 
-        gap: 5px;
-      }
+  width: 90%;
 
-      .tab-btn {
+  text-align: center;
 
-        min-width: 0;
+  color: #cbd5e1;
 
-        padding: 8px 5px;
+  font-size:
+    clamp(11px, 1.8vw, 20px);
 
-        font-size: 12px;
-      }
+  line-height: 1.3;
 
-      select {
+  pointer-events: none;
 
-        width: 100%;
+  z-index: 20;
+}
 
-        padding: 6px;
-      }
 
-      .full-stage {
+/* =====================================================
+   次の問題ボタン
+===================================================== */
 
-        padding-top: 120px;
+.footer-panel {
 
-        padding-bottom: 100px;
-      }
+  position: fixed;
 
-      .main-text {
+  left: 50%;
 
-        font-size: min(70vw, 35vh);
-      }
+  bottom: 14px;
 
-      .sub-text {
+  transform:
+    translateX(-50%);
 
-        font-size: min(14vw, 10vh);
-      }
+  width: 90%;
 
-      .hint-text {
+  max-width: 700px;
 
-        bottom: 75px;
+  z-index: 1000;
+}
 
-        font-size: 13px;
-      }
 
-      .btn-next {
+.btn-next {
 
-        padding: 12px;
+  width: 100%;
 
-        font-size: 19px;
-      }
-    }
+  padding: 15px;
 
+  border: none;
 
-    /* ==============================
-       iPhone 横
-    ============================== */
+  border-radius: 14px;
 
-    @media (max-height: 600px) and (orientation: landscape) {
+  background: #0284c7;
 
-      .header-panel {
+  color: #ffffff;
 
-        top: 5px;
+  font-size:
+    clamp(18px, 3vw, 28px);
 
-        padding: 5px;
+  font-weight: bold;
 
-        width: 96%;
-      }
+  cursor: pointer;
 
-      .tab-btn {
+  box-shadow:
+    0 6px 0 #0369a1;
+}
 
-        padding: 6px 10px;
 
-        font-size: 12px;
-      }
+.btn-next:active {
 
-      select {
+  transform:
+    translateY(3px);
 
-        padding: 5px 8px;
+  box-shadow: none;
+}
 
-        font-size: 12px;
-      }
 
-      .full-stage {
+/* =====================================================
+   iPhone 縦
+===================================================== */
 
-        padding:
-          70px
-          10px
-          65px;
-      }
+@media
+(max-width: 600px)
+and (orientation: portrait) {
 
-      .main-text {
+  .header-panel {
 
-        font-size: min(25vw, 55vh);
-      }
+    top: 6px;
 
-      .sub-text {
+    width: 96%;
 
-        font-size: min(8vw, 12vh);
+    padding: 6px;
 
-        margin-top: 8px;
+    gap: 5px;
 
-        min-height: 10vh;
-      }
+  }
 
-      .hint-text {
 
-        bottom: 48px;
+  .tab-btn {
 
-        font-size: 11px;
-      }
+    min-width: 0;
 
-      .footer-panel {
+    padding: 8px 4px;
 
-        bottom: 5px;
-      }
+    font-size: 11px;
 
-      .btn-next {
+  }
 
-        padding: 8px;
 
-        font-size: 16px;
-      }
-    }
+  #case-select {
 
+    width: 100%;
 
-    /* ==============================
-       iPad
-    ============================== */
+    padding: 6px;
 
-    @media (min-width: 601px) and (max-width: 1200px) {
+    font-size: 13px;
 
-      .main-text {
+  }
 
-        font-size: min(45vw, 50vh);
-      }
 
-      .tab-btn {
+  .full-stage {
 
-        font-size: 16px;
-      }
-    }
+    padding:
+      125px
+      10px
+      115px;
 
+  }
 
-    /* ==============================
-       大型モニター
-    ============================== */
 
-    @media (min-width: 1201px) {
+  .main-text {
 
-      .main-text {
+    font-size:
+      min(70vw, 28vh);
 
-        font-size: min(40vw, 58vh);
-      }
+    line-height: 0.88;
 
-      .sub-text {
+  }
 
-        font-size: min(9vw, 14vh);
-      }
 
-      .header-panel {
+  .sub-text {
 
-        max-width: 1100px;
-      }
+    font-size:
+      min(13vw, 8vh);
 
-      .hint-text {
+    margin-top: 15px;
 
-        font-size: 22px;
-      }
+    min-height:
+      min(10vw, 9vh);
 
-      .btn-next {
+  }
 
-        font-size: 28px;
 
-        padding: 18px;
-      }
-    }
+  .hint-text {
 
-  </style>
+    bottom: 67px;
+
+    font-size: 11px;
+
+  }
+
+
+  .footer-panel {
+
+    bottom: 7px;
+
+  }
+
+
+  .btn-next {
+
+    padding: 10px;
+
+    font-size: 18px;
+
+    border-radius: 11px;
+
+  }
+
+}
+
+
+/* =====================================================
+   iPhone 横
+===================================================== */
+
+@media
+(max-width: 900px)
+and (max-height: 600px)
+and (orientation: landscape) {
+
+  .header-panel {
+
+    top: 4px;
+
+    width: 96%;
+
+    padding: 4px;
+
+    gap: 5px;
+
+  }
+
+
+  .tab-btn {
+
+    min-width: 0;
+
+    padding: 5px 8px;
+
+    font-size: 11px;
+
+  }
+
+
+  #case-select {
+
+    padding: 5px 8px;
+
+    font-size: 11px;
+
+  }
+
+
+  .full-stage {
+
+    padding:
+      65px
+      10px
+      75px;
+
+  }
+
+
+  .main-text {
+
+    font-size:
+      min(28vw, 37vh);
+
+    line-height: 0.85;
+
+  }
+
+
+  .sub-text {
+
+    font-size:
+      min(8vw, 8vh);
+
+    margin-top: 7px;
+
+    min-height: 8vh;
+
+  }
+
+
+  .hint-text {
+
+    bottom: 43px;
+
+    font-size: 9px;
+
+  }
+
+
+  .footer-panel {
+
+    bottom: 3px;
+
+  }
+
+
+  .btn-next {
+
+    padding: 7px;
+
+    font-size: 15px;
+
+    border-radius: 9px;
+
+  }
+
+}
+
+
+/* =====================================================
+   iPad 縦
+===================================================== */
+
+@media
+(min-width: 601px)
+and (max-width: 1200px)
+and (orientation: portrait) {
+
+  .header-panel {
+
+    width: 94%;
+
+    padding: 9px;
+
+  }
+
+
+  .full-stage {
+
+    padding:
+      115px
+      20px
+      135px;
+
+  }
+
+
+  .main-text {
+
+    font-size:
+      min(50vw, 35vh);
+
+  }
+
+
+  .sub-text {
+
+    font-size:
+      min(10vw, 9vh);
+
+    margin-top: 16px;
+
+  }
+
+
+  .hint-text {
+
+    bottom: 77px;
+
+  }
+
+}
+
+
+/* =====================================================
+   iPad 横
+===================================================== */
+
+@media
+(min-width: 601px)
+and (max-width: 1200px)
+and (orientation: landscape) {
+
+  .header-panel {
+
+    top: 7px;
+
+    padding: 7px;
+
+  }
+
+
+  .tab-btn {
+
+    padding: 8px 10px;
+
+    font-size: 14px;
+
+  }
+
+
+  .full-stage {
+
+    padding:
+      85px
+      20px
+      110px;
+
+  }
+
+
+  .main-text {
+
+    font-size:
+      min(42vw, 40vh);
+
+  }
+
+
+  .sub-text {
+
+    font-size:
+      min(9vw, 9vh);
+
+    margin-top: 12px;
+
+  }
+
+
+  .hint-text {
+
+    bottom: 67px;
+
+    font-size: 14px;
+
+  }
+
+
+  .btn-next {
+
+    padding: 12px;
+
+    font-size: 21px;
+
+  }
+
+}
+
+
+/* =====================================================
+   大型モニター
+===================================================== */
+
+@media (min-width: 1201px) {
+
+  .header-panel {
+
+    max-width: 1150px;
+
+    padding: 12px;
+
+  }
+
+
+  .main-text {
+
+    font-size:
+      min(40vw, 48vh);
+
+  }
+
+
+  .sub-text {
+
+    font-size:
+      min(8vw, 10vh);
+
+    margin-top: 22px;
+
+  }
+
+
+  .hint-text {
+
+    bottom: 92px;
+
+    font-size: 21px;
+
+  }
+
+
+  .footer-panel {
+
+    bottom: 15px;
+
+  }
+
+
+  .btn-next {
+
+    padding: 17px;
+
+    font-size: 28px;
+
+  }
+
+}
+
+
+/* =====================================================
+   非常に横長のモニター
+===================================================== */
+
+@media
+(min-width: 1400px)
+and (max-height: 800px) {
+
+  .main-text {
+
+    font-size:
+      min(32vw, 42vh);
+
+  }
+
+
+  .sub-text {
+
+    font-size:
+      min(7vw, 9vh);
+
+  }
+
+}
+
+</style>
+
 </head>
 
 
 <body>
 
 
-  <!-- ==============================
-       ヘッダー
-  ============================== -->
+<!-- ===================================================
+     ヘッダー
+=================================================== -->
 
-  <div class="header-panel">
-
-    <button
-      class="tab-btn active"
-      id="tab1"
-      onclick="switchMode('alpha')">
-
-      ① アルファベット
-
-    </button>
+<div class="header-panel">
 
 
-    <button
-      class="tab-btn"
-      id="tab2"
-      onclick="switchMode('romaji')">
+  <button
+    class="tab-btn active"
+    id="tab1"
+    onclick="switchMode('alpha')">
 
-      ② ローマ字 → ひらがな
+    ① アルファベット
 
-    </button>
-
-
-    <button
-      class="tab-btn"
-      id="tab3"
-      onclick="switchMode('hiragana')">
-
-      ③ ひらがな → ローマ字
-
-    </button>
+  </button>
 
 
-    <select
-      id="case-select"
-      onchange="nextQuestion()">
+  <button
+    class="tab-btn"
+    id="tab2"
+    onclick="switchMode('romaji')">
 
-      <option value="lower">
-        小文字（a, b, c）
-      </option>
+    ② ローマ字 → ひらがな
 
-      <option value="upper">
-        大文字（A, B, C）
-      </option>
-
-      <option value="mix">
-        ランダム
-      </option>
-
-    </select>
-
-  </div>
+  </button>
 
 
-  <!-- ==============================
-       メイン画面
-  ============================== -->
+  <button
+    class="tab-btn"
+    id="tab3"
+    onclick="switchMode('hiragana')">
+
+    ③ ひらがな → ローマ字
+
+  </button>
+
+
+  <select
+    id="case-select"
+    onchange="nextQuestion()">
+
+    <option value="lower">
+      小文字（a, b, c）
+    </option>
+
+    <option value="upper">
+      大文字（A, B, C）
+    </option>
+
+    <option value="mix">
+      ランダム
+    </option>
+
+  </select>
+
+
+</div>
+
+
+<!-- ===================================================
+     メイン画面
+=================================================== -->
+
+<div
+  class="full-stage"
+  onclick="toggleAnswer()">
+
 
   <div
-    class="full-stage"
-    onclick="toggleAnswer()">
+    id="main-display"
+    class="main-text">
 
-    <div
-      class="main-text"
-      id="main-display">
-
-      ?
-
-    </div>
-
-
-    <div
-      class="sub-text"
-      id="sub-display">
-
-    </div>
+    ?
 
   </div>
 
-
-  <!-- ==============================
-       操作説明
-  ============================== -->
 
   <div
-    class="hint-text"
-    id="hint-text">
-
-    画面をタップすると答えが出ます
+    id="sub-display"
+    class="sub-text">
 
   </div>
 
 
-  <!-- ==============================
-       次へ
-  ============================== -->
-
-  <div class="footer-panel">
-
-    <button
-      class="btn-next"
-      onclick="event.stopPropagation(); nextQuestion();">
-
-      つぎの問題 ➔
-
-    </button>
-
-  </div>
+</div>
 
 
-  <script>
+<!-- ===================================================
+     説明
+=================================================== -->
+
+<div
+  id="hint-text"
+  class="hint-text">
+
+  画面をタップすると答えが出ます
+
+</div>
 
 
-    /* ==================================================
-       アルファベット
-    ================================================== */
+<!-- ===================================================
+     次へ
+=================================================== -->
 
-    const alphaData =
-      'abcdefghijklmnopqrstuvwxyz'.split('');
+<div class="footer-panel">
 
+  <button
+    class="btn-next"
+    onclick="
+      event.stopPropagation();
+      nextQuestion();
+    ">
 
-    /* ==================================================
-       ローマ字データ
-    ================================================== */
+    つぎの問題 ➔
 
-    const romajiData = [
+  </button>
 
-      { r:'a', k:'あ' },
-      { r:'i', k:'い' },
-      { r:'u', k:'う' },
-      { r:'e', k:'え' },
-      { r:'o', k:'お' },
-
-      { r:'ka', k:'か' },
-      { r:'ki', k:'き' },
-      { r:'ku', k:'く' },
-      { r:'ke', k:'け' },
-      { r:'ko', k:'こ' },
-
-      { r:'sa', k:'さ' },
-      { r:'shi', k:'し' },
-      { r:'su', k:'す' },
-      { r:'se', k:'せ' },
-      { r:'so', k:'そ' },
-
-      { r:'ta', k:'た' },
-      { r:'chi', k:'ち' },
-      { r:'tsu', k:'つ' },
-      { r:'te', k:'て' },
-      { r:'to', k:'と' },
-
-      { r:'na', k:'な' },
-      { r:'ni', k:'に' },
-      { r:'nu', k:'ぬ' },
-      { r:'ne', k:'ね' },
-      { r:'no', k:'の' },
-
-      { r:'ha', k:'は' },
-      { r:'hi', k:'ひ' },
-      { r:'fu', k:'ふ' },
-      { r:'he', k:'へ' },
-      { r:'ho', k:'ほ' },
-
-      { r:'ma', k:'ま' },
-      { r:'mi', k:'み' },
-      { r:'mu', k:'む' },
-      { r:'me', k:'め' },
-      { r:'mo', k:'も' },
-
-      { r:'ya', k:'や' },
-      { r:'yu', k:'ゆ' },
-      { r:'yo', k:'よ' },
-
-      { r:'ra', k:'ら' },
-      { r:'ri', k:'り' },
-      { r:'ru', k:'る' },
-      { r:'re', k:'れ' },
-      { r:'ro', k:'ろ' },
-
-      { r:'wa', k:'わ' },
-      { r:'wo', k:'を' },
-      { r:'n', k:'ん' },
+</div>
 
 
-      /* 濁音 */
-
-      { r:'ga', k:'が' },
-      { r:'gi', k:'ぎ' },
-      { r:'gu', k:'ぐ' },
-      { r:'ge', k:'げ' },
-      { r:'go', k:'ご' },
-
-      { r:'za', k:'ざ' },
-      { r:'ji', k:'じ' },
-      { r:'zu', k:'ず' },
-      { r:'ze', k:'ぜ' },
-      { r:'zo', k:'ぞ' },
-
-      { r:'da', k:'だ' },
-      { r:'di', k:'ぢ' },
-      { r:'du', k:'づ' },
-      { r:'de', k:'で' },
-      { r:'do', k:'ど' },
-
-      { r:'ba', k:'ば' },
-      { r:'bi', k:'び' },
-      { r:'bu', k:'ぶ' },
-      { r:'be', k:'べ' },
-      { r:'bo', k:'ぼ' },
-
-      { r:'pa', k:'ぱ' },
-      { r:'pi', k:'ぴ' },
-      { r:'pu', k:'ぷ' },
-      { r:'pe', k:'ぺ' },
-      { r:'po', k:'ぽ' },
+<script>
 
 
-      /* 拗音 */
+/* =====================================================
+   ① アルファベット
+===================================================== */
 
-      { r:'kya', k:'きゃ' },
-      { r:'kyu', k:'きゅ' },
-      { r:'kyo', k:'きょ' },
+const alphaData =
 
-      { r:'sha', k:'しゃ' },
-      { r:'shu', k:'しゅ' },
-      { r:'sho', k:'しょ' },
-
-      { r:'cha', k:'ちゃ' },
-      { r:'chu', k:'ちゅ' },
-      { r:'cho', k:'ちょ' },
-
-      { r:'nya', k:'にゃ' },
-      { r:'nyu', k:'にゅ' },
-      { r:'nyo', k:'にょ' },
-
-      { r:'hya', k:'ひゃ' },
-      { r:'hyu', k:'ひゅ' },
-      { r:'hyo', k:'ひょ' },
-
-      { r:'mya', k:'みゃ' },
-      { r:'myu', k:'みゅ' },
-      { r:'myo', k:'みょ' },
-
-      { r:'rya', k:'りゃ' },
-      { r:'ryu', k:'りゅ' },
-      { r:'ryo', k:'りょ' },
-
-      { r:'gya', k:'ぎゃ' },
-      { r:'gyu', k:'ぎゅ' },
-      { r:'gyo', k:'ぎょ' },
-
-      { r:'ja', k:'じゃ' },
-      { r:'ju', k:'じゅ' },
-      { r:'jo', k:'じょ' },
-
-      { r:'bya', k:'びゃ' },
-      { r:'byu', k:'びゅ' },
-      { r:'byo', k:'びょ' },
-
-      { r:'pya', k:'ぴゃ' },
-      { r:'pyu', k:'ぴゅ' },
-      { r:'pyo', k:'ぴょ' }
-
-    ];
+  'abcdefghijklmnopqrstuvwxyz'
+  .split('');
 
 
-    /* ==================================================
-       現在の状態
-    ================================================== */
+/* =====================================================
+   ②③ ローマ字データ
+===================================================== */
 
-    let currentMode = 'alpha';
+const romajiData = [
 
-    let currentItem = null;
+  /* -------------------------
+     清音
+  ------------------------- */
 
-    let isAnswerShown = false;
+  { r:'a', k:'あ' },
+  { r:'i', k:'い' },
+  { r:'u', k:'う' },
+  { r:'e', k:'え' },
+  { r:'o', k:'お' },
+
+  { r:'ka', k:'か' },
+  { r:'ki', k:'き' },
+  { r:'ku', k:'く' },
+  { r:'ke', k:'け' },
+  { r:'ko', k:'こ' },
+
+  { r:'sa', k:'さ' },
+  { r:'shi', k:'し' },
+  { r:'su', k:'す' },
+  { r:'se', k:'せ' },
+  { r:'so', k:'そ' },
+
+  { r:'ta', k:'た' },
+  { r:'chi', k:'ち' },
+  { r:'tsu', k:'つ' },
+  { r:'te', k:'て' },
+  { r:'to', k:'と' },
+
+  { r:'na', k:'な' },
+  { r:'ni', k:'に' },
+  { r:'nu', k:'ぬ' },
+  { r:'ne', k:'ね' },
+  { r:'no', k:'の' },
+
+  { r:'ha', k:'は' },
+  { r:'hi', k:'ひ' },
+  { r:'fu', k:'ふ' },
+  { r:'he', k:'へ' },
+  { r:'ho', k:'ほ' },
+
+  { r:'ma', k:'ま' },
+  { r:'mi', k:'み' },
+  { r:'mu', k:'む' },
+  { r:'me', k:'め' },
+  { r:'mo', k:'も' },
+
+  { r:'ya', k:'や' },
+  { r:'yu', k:'ゆ' },
+  { r:'yo', k:'よ' },
+
+  { r:'ra', k:'ら' },
+  { r:'ri', k:'り' },
+  { r:'ru', k:'る' },
+  { r:'re', k:'れ' },
+  { r:'ro', k:'ろ' },
+
+  { r:'wa', k:'わ' },
+  { r:'wo', k:'を' },
+  { r:'n', k:'ん' },
 
 
-    /* ==================================================
-       モード変更
-    ================================================== */
+  /* -------------------------
+     濁音
+  ------------------------- */
 
-    function switchMode(mode) {
+  { r:'ga', k:'が' },
+  { r:'gi', k:'ぎ' },
+  { r:'gu', k:'ぐ' },
+  { r:'ge', k:'げ' },
+  { r:'go', k:'ご' },
 
-      currentMode = mode;
+  { r:'za', k:'ざ' },
+  { r:'ji', k:'じ' },
+  { r:'zu', k:'ず' },
+  { r:'ze', k:'ぜ' },
+  { r:'zo', k:'ぞ' },
 
-      document
-        .getElementById('tab1')
-        .classList.toggle(
-          'active',
-          mode === 'alpha'
-        );
+  { r:'da', k:'だ' },
+  { r:'di', k:'ぢ' },
+  { r:'du', k:'づ' },
+  { r:'de', k:'で' },
+  { r:'do', k:'ど' },
 
-      document
-        .getElementById('tab2')
-        .classList.toggle(
-          'active',
-          mode === 'romaji'
-        );
-
-      document
-        .getElementById('tab3')
-        .classList.toggle(
-          'active',
-          mode === 'hiragana'
-        );
+  { r:'ba', k:'ば' },
+  { r:'bi', k:'び' },
+  { r:'bu', k:'ぶ' },
+  { r:'be', k:'べ' },
+  { r:'bo', k:'ぼ' },
 
 
-      /*
-        アルファベットだけ
-        大文字・小文字設定を表示
-      */
+  /* -------------------------
+     半濁音
+  ------------------------- */
 
+  { r:'pa', k:'ぱ' },
+  { r:'pi', k:'ぴ' },
+  { r:'pu', k:'ぷ' },
+  { r:'pe', k:'ぺ' },
+  { r:'po', k:'ぽ' },
+
+
+  /* -------------------------
+     拗音
+  ------------------------- */
+
+  { r:'kya', k:'きゃ' },
+  { r:'kyu', k:'きゅ' },
+  { r:'kyo', k:'きょ' },
+
+  { r:'sha', k:'しゃ' },
+  { r:'shu', k:'しゅ' },
+  { r:'sho', k:'しょ' },
+
+  { r:'cha', k:'ちゃ' },
+  { r:'chu', k:'ちゅ' },
+  { r:'cho', k:'ちょ' },
+
+  { r:'nya', k:'にゃ' },
+  { r:'nyu', k:'にゅ' },
+  { r:'nyo', k:'にょ' },
+
+  { r:'hya', k:'ひゃ' },
+  { r:'hyu', k:'ひゅ' },
+  { r:'hyo', k:'ひょ' },
+
+  { r:'mya', k:'みゃ' },
+  { r:'myu', k:'みゅ' },
+  { r:'myo', k:'みょ' },
+
+  { r:'rya', k:'りゃ' },
+  { r:'ryu', k:'りゅ' },
+  { r:'ryo', k:'りょ' },
+
+  { r:'gya', k:'ぎゃ' },
+  { r:'gyu', k:'ぎゅ' },
+  { r:'gyo', k:'ぎょ' },
+
+  { r:'ja', k:'じゃ' },
+  { r:'ju', k:'じゅ' },
+  { r:'jo', k:'じょ' },
+
+  { r:'bya', k:'びゃ' },
+  { r:'byu', k:'びゅ' },
+  { r:'byo', k:'びょ' },
+
+  { r:'pya', k:'ぴゃ' },
+  { r:'pyu', k:'ぴゅ' },
+  { r:'pyo', k:'ぴょ' }
+
+];
+
+
+/* =====================================================
+   現在の状態
+===================================================== */
+
+let currentMode = 'alpha';
+
+let currentItem = null;
+
+let isAnswerShown = false;
+
+
+/* =====================================================
+   モード切り替え
+===================================================== */
+
+function switchMode(mode) {
+
+  currentMode = mode;
+
+
+  /*
+    タブ表示
+  */
+
+  document
+    .getElementById('tab1')
+    .classList.toggle(
+      'active',
+      mode === 'alpha'
+    );
+
+
+  document
+    .getElementById('tab2')
+    .classList.toggle(
+      'active',
+      mode === 'romaji'
+    );
+
+
+  document
+    .getElementById('tab3')
+    .classList.toggle(
+      'active',
+      mode === 'hiragana'
+    );
+
+
+  /*
+    大文字・小文字設定は
+    アルファベットだけ表示
+  */
+
+  const caseSelect =
+    document.getElementById(
+      'case-select'
+    );
+
+
+  caseSelect.style.display =
+    mode === 'alpha'
+      ? 'inline-block'
+      : 'none';
+
+
+  nextQuestion();
+
+}
+
+
+/* =====================================================
+   次の問題
+===================================================== */
+
+function nextQuestion() {
+
+  /*
+    答えを消す
+  */
+
+  isAnswerShown = false;
+
+
+  const subDisplay =
+    document.getElementById(
+      'sub-display'
+    );
+
+
+  subDisplay.textContent = '';
+
+  subDisplay.classList.remove(
+    'answer-show'
+  );
+
+
+  /* =================================================
+     ① アルファベット
+  ================================================= */
+
+  if (currentMode === 'alpha') {
+
+
+    const char =
+      alphaData[
+        Math.floor(
+          Math.random() *
+          alphaData.length
+        )
+      ];
+
+
+    const caseMode =
       document
         .getElementById('case-select')
-        .style.display =
-          mode === 'alpha'
-            ? 'inline-block'
-            : 'none';
+        .value;
 
 
-      nextQuestion();
-
-    }
-
-
-    /* ==================================================
-       次の問題
-    ================================================== */
-
-    function nextQuestion() {
-
-      isAnswerShown = false;
-
-      document
-        .getElementById('sub-display')
-        .textContent = '';
+    let displayChar =
+      char;
 
 
-      /* --------------------------------
-         ① アルファベット
-      -------------------------------- */
+    /*
+      小文字
+    */
 
-      if (currentMode === 'alpha') {
+    if (caseMode === 'lower') {
 
-        const char =
-          alphaData[
-            Math.floor(
-              Math.random() *
-              alphaData.length
-            )
-          ];
-
-
-        const caseMode =
-          document
-            .getElementById('case-select')
-            .value;
-
-
-        let displayChar = char;
-
-
-        if (caseMode === 'upper') {
-
-          displayChar =
-            char.toUpperCase();
-
-        }
-
-        else if (caseMode === 'mix') {
-
-          displayChar =
-            Math.random() > 0.5
-              ? char.toUpperCase()
-              : char;
-
-        }
-
-
-        currentItem = {
-
-          main: displayChar,
-
-          sub:
-            `大文字：${char.toUpperCase()}　/　小文字：${char}`
-
-        };
-
-      }
-
-
-      /* --------------------------------
-         ② ローマ字 → ひらがな
-      -------------------------------- */
-
-      else if (currentMode === 'romaji') {
-
-        const item =
-          romajiData[
-            Math.floor(
-              Math.random() *
-              romajiData.length
-            )
-          ];
-
-
-        currentItem = {
-
-          main: item.r,
-
-          sub: `「 ${item.k} 」`
-
-        };
-
-      }
-
-
-      /* --------------------------------
-         ③ ひらがな → ローマ字
-      -------------------------------- */
-
-      else {
-
-        const item =
-          romajiData[
-            Math.floor(
-              Math.random() *
-              romajiData.length
-            )
-          ];
-
-
-        currentItem = {
-
-          main: item.k,
-
-          sub: `ローマ字：${item.r}`
-
-        };
-
-      }
-
-
-      document
-        .getElementById('main-display')
-        .textContent =
-          currentItem.main;
-
-
-      updateHint();
+      displayChar =
+        char;
 
     }
 
 
-    /* ==================================================
-       説明文変更
-    ================================================== */
+    /*
+      大文字
+    */
 
-    function updateHint() {
+    else if (caseMode === 'upper') {
 
-      const hint =
-        document.getElementById('hint-text');
-
-
-      if (currentMode === 'alpha') {
-
-        hint.textContent =
-          '画面をタップすると答えが出ます';
-
-      }
-
-      else if (currentMode === 'romaji') {
-
-        hint.textContent =
-          'このローマ字は何と読む？　画面をタップして答えを確認！';
-
-      }
-
-      else {
-
-        hint.textContent =
-          'このひらがなをローマ字で書こう！　画面をタップして答えを確認！';
-
-      }
+      displayChar =
+        char.toUpperCase();
 
     }
 
 
-    /* ==================================================
-       答え表示
-    ================================================== */
+    /*
+      ランダム
+    */
 
-    function toggleAnswer() {
+    else {
 
-      if (!currentItem) {
-        return;
-      }
-
-
-      isAnswerShown =
-        !isAnswerShown;
-
-
-      document
-        .getElementById('sub-display')
-        .textContent =
-          isAnswerShown
-            ? currentItem.sub
-            : '';
+      displayChar =
+        Math.random() > 0.5
+          ? char.toUpperCase()
+          : char;
 
     }
 
 
-    /* ==================================================
-       起動
-    ================================================== */
+    currentItem = {
 
-    window.onload = function() {
+      main:
+        displayChar,
 
-      nextQuestion();
+      sub:
+        `大文字：${char.toUpperCase()}　/　小文字：${char}`
 
     };
 
-  </script>
+  }
+
+
+  /* =================================================
+     ② ローマ字 → ひらがな
+  ================================================= */
+
+  else if (currentMode === 'romaji') {
+
+
+    const item =
+      romajiData[
+        Math.floor(
+          Math.random() *
+          romajiData.length
+        )
+      ];
+
+
+    currentItem = {
+
+      main:
+        item.r,
+
+      sub:
+        `「 ${item.k} 」`
+
+    };
+
+  }
+
+
+  /* =================================================
+     ③ ひらがな → ローマ字
+  ================================================= */
+
+  else {
+
+
+    const item =
+      romajiData[
+        Math.floor(
+          Math.random() *
+          romajiData.length
+        )
+      ];
+
+
+    currentItem = {
+
+      main:
+        item.k,
+
+      sub:
+        `ローマ字：${item.r}`
+
+    };
+
+  }
+
+
+  /*
+    問題表示
+  */
+
+  document
+    .getElementById('main-display')
+    .textContent =
+      currentItem.main;
+
+
+  /*
+    説明変更
+  */
+
+  updateHint();
+
+}
+
+
+/* =====================================================
+   説明文
+===================================================== */
+
+function updateHint() {
+
+  const hint =
+    document.getElementById(
+      'hint-text'
+    );
+
+
+  if (currentMode === 'alpha') {
+
+    hint.textContent =
+      '画面をタップすると答えが出ます';
+
+  }
+
+
+  else if (currentMode === 'romaji') {
+
+    hint.textContent =
+      'このローマ字は何と読む？　答えは画面をタップ！';
+
+  }
+
+
+  else {
+
+    hint.textContent =
+      'このひらがなをローマ字で書こう！　答えは画面をタップ！';
+
+  }
+
+}
+
+
+/* =====================================================
+   答え表示
+===================================================== */
+
+function toggleAnswer() {
+
+  if (!currentItem) {
+
+    return;
+
+  }
+
+
+  isAnswerShown =
+    !isAnswerShown;
+
+
+  const subDisplay =
+    document.getElementById(
+      'sub-display'
+    );
+
+
+  if (isAnswerShown) {
+
+    subDisplay.textContent =
+      currentItem.sub;
+
+    subDisplay.classList.remove(
+      'answer-show'
+    );
+
+    /*
+      アニメーションを
+      確実に再実行
+    */
+
+    void subDisplay.offsetWidth;
+
+    subDisplay.classList.add(
+      'answer-show'
+    );
+
+  }
+
+  else {
+
+    subDisplay.textContent = '';
+
+    subDisplay.classList.remove(
+      'answer-show'
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   起動
+===================================================== */
+
+window.onload = function() {
+
+  /*
+    最初の問題
+  */
+
+  nextQuestion();
+
+};
+
+</script>
+
 
 </body>
+
 </html>
 ```
