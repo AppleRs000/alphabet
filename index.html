@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <meta name="robots" content="noindex,nofollow">
-  <title>アルファベット＆ローマ字フラッシュカード</title>
+  <title>大型モニター用 アルファベット＆ローマ字</title>
   <style>
     * {
       box-sizing: border-box;
@@ -12,172 +12,150 @@
       -webkit-user-select: none;
       touch-action: manipulation;
     }
-    body {
-      font-family: 'Hiragino Kaku Gothic ProN', 'メイリオ', sans-serif;
-      background-color: #f0f9ff;
-      color: #0369a1;
+    html, body {
+      width: 100%;
+      height: 100%;
       margin: 0;
-      padding: 10px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    h1 {
-      font-size: clamp(18px, 4.5vw, 24px);
-      color: #0284c7;
-      margin: 5px 0 10px 0;
-      text-align: center;
+      padding: 0;
+      overflow: hidden;
+      font-family: 'Hiragino Kaku Gothic ProN', 'メイリオ', sans-serif;
+      background-color: #0f172a; /* モニターで見やすいダーク背景 */
+      color: #ffffff;
     }
 
-    /* タブ切り替え */
-    .tab-container {
+    /* ヘッダー操作エリア */
+    .header-panel {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 95%;
+      max-width: 800px;
       display: flex;
       gap: 10px;
-      width: 100%;
-      max-width: 450px;
-      margin-bottom: 15px;
-    }
-    .tab-btn {
-      flex: 1;
-      padding: 12px 5px;
-      font-size: 15px;
-      font-weight: bold;
-      border: 3px solid #0284c7;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+      background: rgba(30, 41, 59, 0.9);
+      padding: 8px 15px;
       border-radius: 12px;
-      background-color: #fff;
-      color: #0284c7;
+      border: 1px solid #334155;
+    }
+
+    .tab-btn {
+      padding: 8px 16px;
+      font-size: 16px;
+      font-weight: bold;
+      border: 2px solid #38bdf8;
+      border-radius: 8px;
+      background-color: transparent;
+      color: #38bdf8;
       cursor: pointer;
     }
     .tab-btn.active {
-      background-color: #0284c7;
-      color: #fff;
+      background-color: #38bdf8;
+      color: #0f172a;
     }
 
-    /* メインカードステージ */
-    .card-stage {
-      width: 100%;
-      max-width: 450px;
-      height: 240px;
-      background: #ffffff;
-      border: 4px solid #38bdf8;
-      border-radius: 20px;
+    select {
+      font-size: 15px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 2px solid #38bdf8;
+      background: #0f172a;
+      color: #fff;
+      font-weight: bold;
+    }
+
+    /* 全画面表示ステージ */
+    .full-stage {
+      width: 100vw;
+      height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.08);
-      position: relative;
       cursor: pointer;
+      padding: 20px;
     }
 
+    /* 超巨大な文字表示 */
     .main-text {
-      font-size: 80px;
+      font-size: min(35vw, 45vh); /* 画面サイズ限界まで自動拡大 */
       font-weight: bold;
-      color: #0f172a;
+      color: #facc15; /* 視認性の高いイエロー */
       line-height: 1;
+      text-shadow: 0 10px 20px rgba(0,0,0,0.5);
     }
 
+    /* 正解の大きなサブ表示 */
     .sub-text {
-      font-size: 24px;
+      font-size: min(10vw, 12vh);
       font-weight: bold;
-      color: #e11d48;
-      margin-top: 15px;
-      min-height: 36px;
+      color: #38bdf8; /* 水色 */
+      margin-top: 20px;
+      min-height: min(12vw, 14vh);
+      text-align: center;
     }
 
-    .hint-text {
+    /* フッター（つぎへボタン固定） */
+    .footer-panel {
       position: absolute;
-      bottom: 10px;
-      font-size: 13px;
-      color: #94a3b8;
-      font-weight: bold;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 600px;
+      z-index: 100;
     }
 
-    /* 操作ボタンエリア */
-    .controls {
+    .btn-next {
       width: 100%;
-      max-width: 450px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 15px;
-    }
-    .btn {
-      width: 100%;
-      padding: 14px;
-      font-size: 18px;
+      padding: 16px;
+      font-size: 22px;
       font-weight: bold;
       border: none;
-      border-radius: 12px;
-      cursor: pointer;
+      border-radius: 14px;
+      background-color: #0284c7;
       color: white;
-      box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+      cursor: pointer;
+      box-shadow: 0 6px 0 #0369a1;
     }
-    .btn-show { background-color: #f59e0b; box-shadow: 0 4px 0 #b45309; }
-    .btn-next { background-color: #0284c7; box-shadow: 0 4px 0 #0369a1; }
-    .btn:active { transform: translateY(2px); box-shadow: none; }
-
-    /* 設定エリア */
-    .setting-box {
-      width: 100%;
-      max-width: 450px;
-      background: #fff;
-      padding: 10px 15px;
-      border-radius: 10px;
-      margin-bottom: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-weight: bold;
-      font-size: 14px;
-      border: 1px solid #bae6fd;
-    }
-    select {
-      font-size: 15px;
-      padding: 4px 8px;
-      border-radius: 6px;
-      border: 2px solid #0284c7;
-      background: #fff;
-      font-weight: bold;
+    .btn-next:active {
+      transform: translateY(3px);
+      box-shadow: none;
     }
   </style>
 </head>
 <body>
 
-  <h1>🔤 アルファベット＆ローマ字</h1>
-
-  <div class="tab-container">
+  <!-- ヘッダー設定エリア -->
+  <div class="header-panel">
     <button class="tab-btn active" id="tab1" onclick="switchMode('alpha')">① アルファベット</button>
     <button class="tab-btn" id="tab2" onclick="switchMode('romaji')">② ローマ字</button>
-  </div>
 
-  <div class="setting-box" id="setting-box">
-    <label for="case-select">表示モード:</label>
     <select id="case-select" onchange="nextQuestion()">
-      <option value="lower">小文字（a, b, c...）</option>
-      <option value="upper">大文字（A, B, C...）</option>
-      <option value="mix">ランダム（大文字/小文字）</option>
+      <option value="lower">小文字（a, b, c）</option>
+      <option value="upper">大文字（A, B, C）</option>
+      <option value="mix">ランダム</option>
     </select>
   </div>
 
-  <div class="card-stage" onclick="toggleAnswer()">
+  <!-- 全画面ステージ（タップで答えを表示） -->
+  <div class="full-stage" onclick="toggleAnswer()">
     <div class="main-text" id="main-display">?</div>
     <div class="sub-text" id="sub-display"></div>
-    <div class="hint-text">カードをタップすると答えがでるよ</div>
   </div>
 
-  <div class="controls">
-    <button class="btn btn-show" id="show-btn" onclick="toggleAnswer()">こたえをみる</button>
-    <button class="btn btn-next" onclick="nextQuestion()">つぎの問題</button>
+  <!-- 次へボタン -->
+  <div class="footer-panel">
+    <button class="btn-next" onclick="event.stopPropagation(); nextQuestion();">つぎの問題 ➔</button>
   </div>
 
   <script>
-    // ① アルファベットデータ
     const alphaData = 'abcdefghijklmnopqrstuvwxyz'.split('');
 
-    // ② ローマ字データ (清音・濁音・半濁音・拗音)
     const romajiData = [
-      // 清音
       { r: 'a', k: 'あ' }, { r: 'i', k: 'い' }, { r: 'u', k: 'う' }, { r: 'e', k: 'え' }, { r: 'o', k: 'お' },
       { r: 'ka', k: 'か' }, { r: 'ki', k: 'き' }, { r: 'ku', k: 'く' }, { r: 'ke', k: 'け' }, { r: 'ko', k: 'こ' },
       { r: 'sa', k: 'さ' }, { r: 'shi', k: 'し' }, { r: 'su', k: 'す' }, { r: 'se', k: 'せ' }, { r: 'so', k: 'そ' },
@@ -188,13 +166,11 @@
       { r: 'ya', k: 'や' }, { r: 'yu', k: 'ゆ' }, { r: 'yo', k: 'よ' },
       { r: 'ra', k: 'ら' }, { r: 'ri', k: 'り' }, { r: 'ru', k: 'る' }, { r: 're', k: 'れ' }, { r: 'ro', k: 'ろ' },
       { r: 'wa', k: 'わ' }, { r: 'wo', k: 'を' }, { r: 'n', k: 'ん' },
-      // 濁音・半濁音
       { r: 'ga', k: 'が' }, { r: 'gi', k: 'ぎ' }, { r: 'gu', k: 'ぐ' }, { r: 'ge', k: 'げ' }, { r: 'go', k: 'ご' },
       { r: 'za', k: 'ざ' }, { r: 'ji', k: 'じ' }, { r: 'zu', k: 'ず' }, { r: 'ze', k: 'ぜ' }, { r: 'zo', k: 'ぞ' },
       { r: 'da', k: 'だ' }, { r: 'di', k: 'ぢ' }, { r: 'du', k: 'づ' }, { r: 'de', k: 'で' }, { r: 'do', k: 'ど' },
       { r: 'ba', k: 'ば' }, { r: 'bi', k: 'び' }, { r: 'bu', k: 'ぶ' }, { r: 'be', k: 'べ' }, { r: 'bo', k: 'ぼ' },
       { r: 'pa', k: 'ぱ' }, { r: 'pi', k: 'ぴ' }, { r: 'pu', k: 'ぷ' }, { r: 'pe', k: 'ぺ' }, { r: 'po', k: 'ぽ' },
-      // 拗音
       { r: 'kya', k: 'きゃ' }, { r: 'kyu', k: 'きゅ' }, { r: 'kyo', k: 'きょ' },
       { r: 'sha', k: 'しゃ' }, { r: 'shu', k: 'しゅ' }, { r: 'sho', k: 'しょ' },
       { r: 'cha', k: 'ちゃ' }, { r: 'chu', k: 'ちゅ' }, { r: 'cho', k: 'ちょ' },
@@ -208,7 +184,7 @@
       { r: 'pya', k: 'ぴゃ' }, { r: 'pyu', k: 'ぴゅ' }, { r: 'pyo', k: 'ぴょ' }
     ];
 
-    let currentMode = 'alpha'; // 'alpha' or 'romaji'
+    let currentMode = 'alpha';
     let currentItem = null;
     let isAnswerShown = false;
 
@@ -216,7 +192,7 @@
       currentMode = mode;
       document.getElementById('tab1').classList.toggle('active', mode === 'alpha');
       document.getElementById('tab2').classList.toggle('active', mode === 'romaji');
-      document.getElementById('setting-box').style.display = (mode === 'alpha') ? 'flex' : 'none';
+      document.getElementById('case-select').style.display = (mode === 'alpha') ? 'inline-block' : 'none';
       nextQuestion();
     }
 
@@ -243,7 +219,7 @@
         const item = romajiData[Math.floor(Math.random() * romajiData.length)];
         currentItem = {
           main: item.r,
-          sub: `ひらがな: 「 ${item.k} 」`
+          sub: `「 ${item.k} 」`
         };
       }
 
